@@ -9,13 +9,17 @@ class PassportAuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
+        //Validate data with form requests
         $data = $request->validated();
 
         if (auth()->attempt($data)) {
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
+
+            //get user details
             $user = auth()->user();
+
+            //return user with token
             return response()-> json((compact('user', 'token')));
-//            return response()->json(['token' => $token], 200);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
         }
