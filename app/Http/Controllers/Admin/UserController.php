@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UserCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -40,16 +42,22 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-//        dd($request);
         //Validate data with form requests
         $input = $request->validated();
-//        $data = $request->all();
 
-        $hashed_random_password = Hash::make(Str::random(8));
+        $new_password = Str::random(8);
+
+        $hashed_random_password = Hash::make($new_password);
         $input['password'] = $hashed_random_password;
 
+//        dd($input['name']);
+
+
         $user = User::create($input);
-        $user->assignRole($request->input('roles'));
+
+        event(new UserCreated($input['email'], $new_password , $input['name']));
+
+        $user->assignRole($request->input('role'));
 
         return response([
             'user' => new UserResource($user),

@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Password;
 
-class UserRequest extends FormRequest
+class ProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +24,17 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'role' => 'required'
+            'name' => ['required' ,'max:255','unique:projects,name'],
+            'description'=> ['required'],
+            'address'=> ['required'],
+//            'image'=> ['required|image'],
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'name.required' => 'A title for the project is required',
+            'image.image' => 'The uploaded file should be an image',
         ];
     }
 }
