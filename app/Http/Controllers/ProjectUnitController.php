@@ -16,6 +16,7 @@ class ProjectUnitController extends Controller
     {
 
         return ProjectUnit::with(['project','project.admin','tenant'])->get();
+
     }
 
     /**
