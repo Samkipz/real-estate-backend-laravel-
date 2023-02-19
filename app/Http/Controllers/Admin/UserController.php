@@ -50,8 +50,6 @@ class UserController extends Controller
         $hashed_random_password = Hash::make($new_password);
         $input['password'] = $hashed_random_password;
 
-//        dd($input['name']);
-
 
         $user = User::create($input);
 
@@ -85,7 +83,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        $data = $request->validated();
         $input = $request->all();
 
         $user = User::find($id);
