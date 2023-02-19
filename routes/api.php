@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\IssueController;
 use App\Http\Controllers\PassportAuthController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\ProjectUnitController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,8 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::post('project', [ProjectsController::class, 'store']);
     Route::put('project/{id}', [ProjectsController::class, 'update']);
     Route::delete('project/{id}', [ProjectsController::class, 'destroy']);
+
+    Route::resource('project-unit', ProjectUnitController::class);
 
     Route::resource('issue', IssueController::class);
     Route::post('issue/resolve/{id}', [IssueController::class, 'resolve']);
