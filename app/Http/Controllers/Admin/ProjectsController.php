@@ -71,7 +71,6 @@ class ProjectsController extends Controller
     {
         $project = Project::findOrFail($id);
         $project->delete();
-
         return 204;
     }
 }
