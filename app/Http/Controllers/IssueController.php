@@ -34,6 +34,13 @@ class IssueController extends Controller
 //        return response(['issues'=>$issues]);
     }
 
+    public function tenantIssue($id)
+    {
+//        $user = Auth::user();
+        $issues = Issue::with(['issueCreator', 'comments'])->where('creator_id', $id)->get();
+        return  $issues;
+    }
+
     /**
      * Store a newly created resource in storage.
      *

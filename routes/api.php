@@ -23,55 +23,53 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//
+////Get Users with roles
+//Route::middleware(['auth:api'])->get('/user', function (Request $request) {
+//    $user = $request->user();
+//    $roles = $request->user()->getPermissionsViaRoles()->first();
+//    return response($user, 200);
+//});
 
-//Get Users with roles
-Route::middleware(['auth:api'])->get('/user', function (Request $request) {
-    $user = $request->user();
-    $roles = $request->user()->getPermissionsViaRoles()->first();
-    return response($user, 200);
-});
-//get current user roles
-Route::middleware(['auth:api'])->get('/user-role', function (Request $request) {
-    return $request->user()->getRoleNames()->first();
-});
+////get current user roles
+//Route::middleware(['auth:api'])->get('/user-role', function (Request $request) {
+//    return $request->user()->getRoleNames()->first();
+//});
+
+
 //.Login
 Route::post('login', [PassportAuthController::class, 'login'])->middleware();
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware(['auth'])->name('verification.notice');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return response(['message' => 'Email successfully Verified'], 200);
-})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('forgot-password', [PasswordResetController::class, 'submitForgetPasswordRequest'])->name('password.email');
+Route::get('reset-password/{token}', [PasswordResetController::class, 'showResetPasswordForm'])->name('password.reset');;
+Route::post('reset-password', [PasswordResetController::class, 'submitResetPasswordForm'])->name('reset.password.get');
+
+//Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//    $request->fulfill();
+//    return response(['message' => 'Email successfully Verified'], 200);
+//})->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::group(['middleware' => ['auth:api']], function() {
     Route::resource('roles', RoleController::class);
     Route::post('/logout', [PassportAuthController::class, 'logout']);
 
-    Route::get('users', [UserController::class, 'index']);
-    Route::get('users/{id}', [UserController::class, 'show']);
-    Route::post('users', [UserController::class, 'store']);
-    Route::put('users/{id}', [UserController::class, 'update']);
-    Route::delete('users/{user}', [UserController::class, 'destroy']);
+    Route::resource('users', UserController::class);
 
-    Route::get('project', [ProjectsController::class, 'index']);
-    Route::get('project/{id}', [ProjectsController::class, 'show']);
-    Route::post('project', [ProjectsController::class, 'store']);
-    Route::put('project/{id}', [ProjectsController::class, 'update']);
-    Route::delete('project/{id}', [ProjectsController::class, 'destroy']);
-
+    Route::resource('project', ProjectsController::class);
     Route::resource('project-unit', ProjectUnitController::class);
-
     Route::resource('issue', IssueController::class);
+    Route::get('/issue/creator-id/{id}', [IssueController::class, 'tenantIssue']);
     Route::post('issue/resolve/{id}', [IssueController::class, 'resolve']);
-
     Route::resource('comment', CommentController::class);
 
+
+
 //    Route::get('forget-password', [PasswordResetController::class, 'showForgetPasswordForm']);
-    Route::post('forget-password', [PasswordResetController::class, 'submitForgetPasswordRequest']);
-    Route::get('reset-password/{token}', [PasswordResetController::class, 'showResetPasswordForm']);
-    Route::post('reset-password', [PasswordResetController::class, 'submitResetPasswordForm']);
+
 });
 
 

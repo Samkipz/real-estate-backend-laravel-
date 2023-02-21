@@ -21,7 +21,7 @@ class ProjectFactory extends Factory
         return [
             'creator_id' => User::all()->unique()->random()->id,
             'admin_id' => User::all()->unique()->random()->id,
-            'name' => fake()->name(),
+            'name' => fake()->company(),
             'description' => fake()->paragraph(),
             'image' => fake()->image(),
         ];

@@ -24,19 +24,18 @@
 </style>
 
 <div class="header">
-    <h4> Welcome To Oaks Property Management</h4>
+    <h4> Password Reset Link </h4>
 </div>
 <div class="my-body">
-    <p>Hello, {{ $name }}</p>
-    <p> We are pleased to have you in our team</p>
+    <p>Hello</p>
+    <p> This email is a confirmation of the requested link to reset your account password</p>
     <p>
-        Below is your basic logins credentials, once you login,
-        please change your email and password.
+        You can reset password from bellow link:
+        <a href="{{ route('reset.password.get', $token) }}">Reset Password</a>
     </p>
+
     <p>
-        Email: {{ $email }}
-        <br>
-        Password: {{ $password }}
+        If you did not initiate this action, please ignore
     </p>
 </div>
 </body>

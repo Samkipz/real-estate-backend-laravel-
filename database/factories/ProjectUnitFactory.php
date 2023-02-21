@@ -21,7 +21,7 @@ class ProjectUnitFactory extends Factory
         return [
             'project_id' => Project::all()->random()->id,
             'tenant_id' => User::all()->unique()->random()->id,
-            'name' => fake()->name(),
+            'name' => fake()->companySuffix,
         ];
     }
 
